@@ -5,34 +5,30 @@
 
     <group android:checkableBehavior="single">
         <item
-            android:id="@+id/nav_camera"
-            android:icon="@drawable/ic_menu_camera"
-            android:title="Import" />
+            android:id="@+id/nav_movies"
+            android:icon="@mipmap/ic_movie_black"
+            android:title="@string/nav_movies_title" />
         <item
-            android:id="@+id/nav_gallery"
-            android:icon="@drawable/ic_menu_gallery"
-            android:title="Gallery" />
+            android:id="@+id/nav_movies_by_genre"
+            android:icon="@mipmap/ic_movie_filter"
+            android:title="@string/nav_genres_title" />
         <item
-            android:id="@+id/nav_slideshow"
-            android:icon="@drawable/ic_menu_slideshow"
-            android:title="Slideshow" />
+            android:id="@+id/nav_favorites"
+            android:icon="@mipmap/ic_favorite_black"
+            android:title="@string/nav_favorites_title" />
         <item
-            android:id="@+id/nav_manage"
-            android:icon="@drawable/ic_menu_manage"
-            android:title="Tools" />
-    </group>
+            android:id="@+id/nav_top10"
+            android:icon="@mipmap/ic_stars_black"
+            android:title="@string/nav_top10_title" />
+        <item
+            android:id="@+id/nav_register"
+            android:icon="@mipmap/ic_library_add_black"
+            android:title="@string/nav_register_title" />
 
-    <item android:title="Communicate">
-        <menu>
-            <item
-                android:id="@+id/nav_share"
-                android:icon="@drawable/ic_menu_share"
-                android:title="Share" />
-            <item
-                android:id="@+id/nav_send"
-                android:icon="@drawable/ic_menu_send"
-                android:title="Send" />
-        </menu>
-    </item>
+        <item
+            android:id="@+id/nav_logout"
+            android:icon="@mipmap/ic_logout_black"
+            android:title="@string/nav_logout_title" />
+    </group>
 
 </menu>
