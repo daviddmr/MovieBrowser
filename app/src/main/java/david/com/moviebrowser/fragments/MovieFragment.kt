@@ -8,7 +8,10 @@ import android.view.View
 import android.view.ViewGroup
 import david.com.moviebrowser.R
 import david.com.moviebrowser.api.RetrofitInitializer
+import david.com.moviebrowser.model.Movie
 import david.com.moviebrowser.model.ResponseBody
+import david.com.moviebrowser.util.Constants.Companion.API_KEY
+import io.realm.Realm
 import retrofit2.Call
 import retrofit2.Callback
 import retrofit2.Response
@@ -32,11 +35,20 @@ class MovieFragment : Fragment() {
         loadMovies()
     }
 
-    fun loadMovies() {
+    private fun loadMovies() {
 
-        val call = RetrofitInitializer().githubService().getAllMovies(2, 1, null)
+        val realm = Realm.getDefaultInstance()
+
+        val call = RetrofitInitializer().movieService().getTopRatedMovies(1, API_KEY, "pt-BR")
         call.enqueue(object : Callback<ResponseBody> {
             override fun onResponse(call: Call<ResponseBody>?, response: Response<ResponseBody>) {
+                Log.d("EX", "")
+                realm.beginTransaction()
+                realm.copyToRealmOrUpdate(response.body()?.movies)
+                realm.commitTransaction()
+
+                val movie = realm.where(Movie::class.java).findAll()
+                val movie2 = realm.copyFromRealm(movie)
                 Log.d("EX", "")
             }
 
