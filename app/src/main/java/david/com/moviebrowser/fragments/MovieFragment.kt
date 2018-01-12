@@ -58,21 +58,7 @@ class MovieFragment : Fragment() {
     fun refreshMovieList(movies: List<Movie>) {
         val movieTopRatedAdapter = MovieTopRatedAdapter(context, movies)
         rvTopRatedMovies.adapter = movieTopRatedAdapter
-    }
-
-    private fun onScrollListener(): RecyclerView.OnScrollListener {
-        return object : RecyclerView.OnScrollListener() {
-            override fun onScrolled(recyclerView: RecyclerView?, dx: Int, dy: Int) {
-                super.onScrolled(recyclerView, dx, dy)
-
-                val linearLayoutManager: LinearLayoutManager = rvTopRatedMovies.layoutManager as LinearLayoutManager
-
-                if(movies.size == linearLayoutManager.findLastCompletelyVisibleItemPosition() + 1) {
-                    Log.d("EX", "Get More!")
-                    loadMovies(currentPage++)
-                }
-            }
-        }
+        movieTopRatedAdapter.notifyDataSetChanged()
     }
 
     private fun loadMovies(currentPage: Int) {
@@ -82,7 +68,9 @@ class MovieFragment : Fragment() {
         val call = RetrofitInitializer().movieService().getTopRatedMovies(currentPage, API_KEY, language)
         call.enqueue(object : Callback<ResponseBody> {
             override fun onResponse(call: Call<ResponseBody>?, response: Response<ResponseBody>?) {
-                Log.d("EX", "Getting movie: " + currentPage)
+                Log.d(TAG, "Getting movie: " + currentPage)
+                this@MovieFragment.currentPage++
+
                 movies.addAll(response?.body()?.movies as MutableList<Movie>)
                 movies.isNotEmpty().let {
                     refreshMovieList(movies)
@@ -92,14 +80,28 @@ class MovieFragment : Fragment() {
                 }
 
                 val moviesQueried: List<Movie> = realm.copyFromRealm(realm.where(Movie::class.java).findAll())
-                Log.d("EX", "")
+                Log.d(TAG, "")
             }
 
             override fun onFailure(call: Call<ResponseBody>?, t: Throwable?) {
-                Log.d("EX", "")
+                Log.d(TAG, "")
             }
 
         })
 
+    }
+
+    private fun onScrollListener(): RecyclerView.OnScrollListener {
+        return object : RecyclerView.OnScrollListener() {
+            override fun onScrolled(recyclerView: RecyclerView?, dx: Int, dy: Int) {
+                super.onScrolled(recyclerView, dx, dy)
+
+                val linearLayoutManager: LinearLayoutManager = rvTopRatedMovies.layoutManager as LinearLayoutManager
+                if (movies.size == linearLayoutManager.findLastCompletelyVisibleItemPosition() + 1) {
+                    Log.d(TAG, "Get More!")
+                    loadMovies(currentPage)
+                }
+            }
+        }
     }
 }
