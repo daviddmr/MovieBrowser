@@ -12,8 +12,10 @@ import android.view.ViewGroup
 import david.com.moviebrowser.R
 import david.com.moviebrowser.adapters.MovieTopRatedAdapter
 import david.com.moviebrowser.api.RetrofitInitializer
+import david.com.moviebrowser.model.Genre
+import david.com.moviebrowser.model.GenreResponse
 import david.com.moviebrowser.model.Movie
-import david.com.moviebrowser.model.ResponseBody
+import david.com.moviebrowser.model.MovieResponse
 import david.com.moviebrowser.util.Constants.Companion.API_KEY
 import david.com.moviebrowser.util.Constants.Companion.language
 import io.realm.Realm
@@ -61,13 +63,37 @@ class MovieFragment : Fragment() {
         movieTopRatedAdapter.notifyDataSetChanged()
     }
 
+    private fun loadGenres() {
+        val realm = Realm.getDefaultInstance()
+
+        val call = RetrofitInitializer().genreService().getGenres(API_KEY, language)
+        call.enqueue(object : Callback<GenreResponse> {
+            override fun onResponse(call: Call<GenreResponse>?, response: Response<GenreResponse>?) {
+                val genres = response?.body()?.genres ?: listOf()
+                genres.isNotEmpty().let {
+                    realm.executeTransaction {
+                        realm.copyToRealm(genres)
+                    }
+                }
+
+                val genresQueried: List<Genre> = realm.copyFromRealm(realm.where(Genre::class.java).findAll())
+                Log.d(TAG, "")
+            }
+
+            override fun onFailure(call: Call<GenreResponse>?, t: Throwable?) {
+                Log.d(TAG, "")
+            }
+
+        })
+    }
+
     private fun loadMovies(currentPage: Int) {
 
         val realm = Realm.getDefaultInstance()
 
         val call = RetrofitInitializer().movieService().getTopRatedMovies(currentPage, API_KEY, language)
-        call.enqueue(object : Callback<ResponseBody> {
-            override fun onResponse(call: Call<ResponseBody>?, response: Response<ResponseBody>?) {
+        call.enqueue(object : Callback<MovieResponse> {
+            override fun onResponse(call: Call<MovieResponse>?, response: Response<MovieResponse>?) {
                 Log.d(TAG, "Getting movie: " + currentPage)
                 this@MovieFragment.currentPage++
 
@@ -83,7 +109,7 @@ class MovieFragment : Fragment() {
                 Log.d(TAG, "")
             }
 
-            override fun onFailure(call: Call<ResponseBody>?, t: Throwable?) {
+            override fun onFailure(call: Call<MovieResponse>?, t: Throwable?) {
                 Log.d(TAG, "")
             }
 
