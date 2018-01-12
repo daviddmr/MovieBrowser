@@ -1,6 +1,6 @@
 package david.com.moviebrowser.api.interfaces
 
-import david.com.moviebrowser.model.ResponseBody
+import david.com.moviebrowser.model.MovieResponse
 import david.com.moviebrowser.util.Constants.Companion.API_VERSION_3
 import david.com.moviebrowser.util.Constants.Companion.movie
 import retrofit2.Call
@@ -14,6 +14,6 @@ interface MovieService {
             @Query("page") page: Int,
             @Query("api_key") apiKey: String,
             @Query("language") language: String?
-    ): Call<ResponseBody>
+    ): Call<MovieResponse>
 
 }

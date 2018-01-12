@@ -6,7 +6,7 @@ import io.realm.RealmObject
 import io.realm.annotations.PrimaryKey
 import io.realm.annotations.RealmClass
 
-class ResponseBody(
+class MovieResponse(
         val page: Int,
         @SerializedName("total_results") val totalResults: Long,
         @SerializedName("total_pages") val totalPages: Long,
