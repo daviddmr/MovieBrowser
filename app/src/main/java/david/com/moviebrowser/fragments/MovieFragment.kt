@@ -11,6 +11,7 @@ import david.com.moviebrowser.api.RetrofitInitializer
 import david.com.moviebrowser.model.Movie
 import david.com.moviebrowser.model.ResponseBody
 import david.com.moviebrowser.util.Constants.Companion.API_KEY
+import david.com.moviebrowser.util.Constants.Companion.language
 import io.realm.Realm
 import retrofit2.Call
 import retrofit2.Callback
@@ -39,7 +40,7 @@ class MovieFragment : Fragment() {
 
         val realm = Realm.getDefaultInstance()
 
-        val call = RetrofitInitializer().movieService().getTopRatedMovies(1, API_KEY, "pt-BR")
+        val call = RetrofitInitializer().movieService().getTopRatedMovies(1, API_KEY, language)
         call.enqueue(object : Callback<ResponseBody> {
             override fun onResponse(call: Call<ResponseBody>?, response: Response<ResponseBody>) {
                 Log.d("EX", "")
