@@ -4,6 +4,7 @@ import android.os.Bundle
 import android.support.v4.app.Fragment
 import android.support.v7.widget.DividerItemDecoration
 import android.support.v7.widget.LinearLayoutManager
+import android.support.v7.widget.RecyclerView
 import android.util.Log
 import android.view.LayoutInflater
 import android.view.View
@@ -23,6 +24,9 @@ import retrofit2.Response
 
 class MovieFragment : Fragment() {
 
+    private var currentPage: Int = 1
+    private var movies: MutableList<Movie> = mutableListOf()
+
     companion object {
         val TAG = "MovieFrag"
 
@@ -35,34 +39,53 @@ class MovieFragment : Fragment() {
         return inflater!!.inflate(R.layout.fragment_movies, container, false)
     }
 
-    override fun onCreate(savedInstanceState: Bundle?) {
-        super.onCreate(savedInstanceState)
-        loadMovies()
+    override fun onViewCreated(view: View?, savedInstanceState: Bundle?) {
+        super.onViewCreated(view, savedInstanceState)
+        initRecyclerView()
+        loadMovies(currentPage)
     }
 
-    fun initRecyclerView(movies: List<Movie>) {
+    private fun initRecyclerView() {
         rvTopRatedMovies.setHasFixedSize(true)
+        rvTopRatedMovies.addOnScrollListener(onScrollListener())
         val linearLayoutManager = LinearLayoutManager(context)
         rvTopRatedMovies.layoutManager = linearLayoutManager
 
         val dividerItemDecoration = DividerItemDecoration(context, linearLayoutManager.orientation)
         rvTopRatedMovies.addItemDecoration(dividerItemDecoration)
+    }
 
+    fun refreshMovieList(movies: List<Movie>) {
         val movieTopRatedAdapter = MovieTopRatedAdapter(context, movies)
         rvTopRatedMovies.adapter = movieTopRatedAdapter
     }
 
-    private fun loadMovies() {
+    private fun onScrollListener(): RecyclerView.OnScrollListener {
+        return object : RecyclerView.OnScrollListener() {
+            override fun onScrolled(recyclerView: RecyclerView?, dx: Int, dy: Int) {
+                super.onScrolled(recyclerView, dx, dy)
+
+                val linearLayoutManager: LinearLayoutManager = rvTopRatedMovies.layoutManager as LinearLayoutManager
+
+                if(movies.size == linearLayoutManager.findLastCompletelyVisibleItemPosition() + 1) {
+                    Log.d("EX", "Get More!")
+                    loadMovies(currentPage++)
+                }
+            }
+        }
+    }
+
+    private fun loadMovies(currentPage: Int) {
 
         val realm = Realm.getDefaultInstance()
 
-        val call = RetrofitInitializer().movieService().getTopRatedMovies(1, API_KEY, language)
+        val call = RetrofitInitializer().movieService().getTopRatedMovies(currentPage, API_KEY, language)
         call.enqueue(object : Callback<ResponseBody> {
             override fun onResponse(call: Call<ResponseBody>?, response: Response<ResponseBody>?) {
-                Log.d("EX", "")
-                val movies: List<Movie> = response?.body()?.movies ?: listOf()
+                Log.d("EX", "Getting movie: " + currentPage)
+                movies.addAll(response?.body()?.movies as MutableList<Movie>)
                 movies.isNotEmpty().let {
-                    initRecyclerView(movies)
+                    refreshMovieList(movies)
                     realm.executeTransaction {
                         realm.copyToRealmOrUpdate(movies)
                     }
