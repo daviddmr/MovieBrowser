@@ -1,6 +1,7 @@
 package david.com.moviebrowser.model
 
 import com.google.gson.annotations.SerializedName
+import io.realm.RealmList
 import io.realm.RealmObject
 import io.realm.annotations.PrimaryKey
 import io.realm.annotations.RealmClass
@@ -24,5 +25,31 @@ open class Movie : RealmObject() {
     var voteCount: Double = 0.0
 
     var video: Boolean = false
+
+    @SerializedName("vote_average")
+    var voteAverage: Double = 0.0
+
+    var popularity: Double = 0.0
+
+    @SerializedName("poster_path")
+    var posterPath: String = ""
+
+    @SerializedName("original_language")
+    var originalLanguage: String = ""
+
+    @SerializedName("original_title")
+    var originalTitle: String = ""
+
+    @SerializedName("genre_ids")
+    lateinit var genreIds: RealmList<Int>
+
+    @SerializedName("backdrop_path")
+    var backdropPath: String = ""
+
+    var adult: Boolean = false
+
+    var overview: String = ""
+    @SerializedName("release_date")
+    var releaseDate: String = ""
 
 }
