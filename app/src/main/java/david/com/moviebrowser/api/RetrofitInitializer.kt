@@ -1,5 +1,6 @@
 package david.com.moviebrowser.api
 
+import david.com.moviebrowser.api.interfaces.GenreService
 import david.com.moviebrowser.api.interfaces.MovieService
 import david.com.moviebrowser.util.Constants.Companion.BASE_URL
 import okhttp3.OkHttpClient
@@ -26,5 +27,6 @@ class RetrofitInitializer {
             .build()
 
     fun movieService(): MovieService = retrofit.create(MovieService::class.java)
+    fun genreService(): GenreService = retrofit.create(GenreService::class.java)
 
 }

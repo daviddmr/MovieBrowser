@@ -13,6 +13,7 @@ class Constants {
         val language: String = Locale.getDefault().toString().replace("_", "-")
 
         const val movie: String = "movie/"
+        const val genre: String = "genre/"
     }
 
 }
