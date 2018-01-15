@@ -1,5 +1,8 @@
 package david.com.moviebrowser.api
 
+import david.com.moviebrowser.api.interceptors.AccessTokenInterceptor
+import david.com.moviebrowser.api.interceptors.DefaultRequestInterceptor
+import david.com.moviebrowser.model.AccessToken
 import david.com.moviebrowser.util.Constants.Companion.BASE_URL
 import okhttp3.OkHttpClient
 import okhttp3.logging.HttpLoggingInterceptor
@@ -8,22 +11,32 @@ import retrofit2.converter.gson.GsonConverterFactory
 
 class RetrofitInitializer {
 
-    private var logging: HttpLoggingInterceptor = HttpLoggingInterceptor()
-    var httpClient: OkHttpClient.Builder
+    var logging: HttpLoggingInterceptor = HttpLoggingInterceptor()
+    var httpClient: OkHttpClient.Builder = OkHttpClient.Builder()
 
     init {
-        logging.level = HttpLoggingInterceptor.Level.BASIC
-
-        httpClient = OkHttpClient.Builder()
+        logging.level = HttpLoggingInterceptor.Level.BODY
         httpClient.addInterceptor(logging)
     }
 
-    val retrofit: Retrofit = Retrofit.Builder()
-            .addConverterFactory(GsonConverterFactory.create())
+    val builder: Retrofit.Builder = Retrofit.Builder()
             .baseUrl(BASE_URL)
-            .client(httpClient.build())
-            .build()
+            .addConverterFactory(GsonConverterFactory.create())
 
-    inline fun <reified T> service(serviceClass: Class<T>): T = retrofit.create(serviceClass)
+    inline fun <reified T> service(serviceClass: Class<T>, accessToken: AccessToken): T {
+        httpClient.addInterceptor(DefaultRequestInterceptor(accessToken))
+        return service(serviceClass)
+    }
+
+    inline fun <reified T> service(serviceClass: Class<T>, clientId: String, clientSecret: String): T {
+        httpClient.addInterceptor(AccessTokenInterceptor(clientId, clientSecret))
+        return service(serviceClass)
+    }
+
+    inline fun <reified T> service(serviceClass: Class<T>): T {
+        val retrofit: Retrofit = builder.client(httpClient.build()).build()
+
+        return retrofit.create(serviceClass)
+    }
 
 }
