@@ -1,7 +1,5 @@
 package david.com.moviebrowser.api
 
-import david.com.moviebrowser.api.interfaces.GenreService
-import david.com.moviebrowser.api.interfaces.MovieService
 import david.com.moviebrowser.util.Constants.Companion.BASE_URL
 import okhttp3.OkHttpClient
 import okhttp3.logging.HttpLoggingInterceptor
@@ -11,7 +9,7 @@ import retrofit2.converter.gson.GsonConverterFactory
 class RetrofitInitializer {
 
     private var logging: HttpLoggingInterceptor = HttpLoggingInterceptor()
-    private var httpClient: OkHttpClient.Builder
+    var httpClient: OkHttpClient.Builder
 
     init {
         logging.level = HttpLoggingInterceptor.Level.BASIC
@@ -20,13 +18,12 @@ class RetrofitInitializer {
         httpClient.addInterceptor(logging)
     }
 
-    private val retrofit = Retrofit.Builder()
+    val retrofit: Retrofit = Retrofit.Builder()
             .addConverterFactory(GsonConverterFactory.create())
             .baseUrl(BASE_URL)
             .client(httpClient.build())
             .build()
 
-    fun movieService(): MovieService = retrofit.create(MovieService::class.java)
-    fun genreService(): GenreService = retrofit.create(GenreService::class.java)
+    inline fun <reified T> service(serviceClass: Class<T>): T = retrofit.create(serviceClass)
 
 }
