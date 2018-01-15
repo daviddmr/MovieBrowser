@@ -5,6 +5,15 @@ import java.util.*
 class Constants {
 
     companion object {
+        //API Headers
+        const val GRANT_TYPE_PASSWORD = "password"
+        const val SCOPE_WRITE = "write"
+        const val HEADER_CONTENT_TYPE = "Content-Type"
+        const val FORM_URL_ENCODED = "application/x-www-form-urlencoded"
+        const val HEADER_ACCEPT = "Accept"
+        const val APPLICATION_JSON = "application/json"
+        const val HEADER_AUTHORIZATION = "Authorization"
+
         //API Constants
         const val BASE_URL: String = "https://api.themoviedb.org/"
         const val API_VERSION_3: String = "3/"
