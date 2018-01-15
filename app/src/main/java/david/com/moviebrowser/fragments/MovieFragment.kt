@@ -12,6 +12,8 @@ import android.view.ViewGroup
 import david.com.moviebrowser.R
 import david.com.moviebrowser.adapters.MovieTopRatedAdapter
 import david.com.moviebrowser.api.RetrofitInitializer
+import david.com.moviebrowser.api.interfaces.GenreService
+import david.com.moviebrowser.api.interfaces.MovieService
 import david.com.moviebrowser.model.Genre
 import david.com.moviebrowser.model.GenreResponse
 import david.com.moviebrowser.model.Movie
@@ -66,7 +68,7 @@ class MovieFragment : Fragment() {
     private fun loadGenres() {
         val realm = Realm.getDefaultInstance()
 
-        val call = RetrofitInitializer().genreService().getGenres(API_KEY, language)
+        val call = RetrofitInitializer().service(GenreService::class.java).getGenres(API_KEY, language)
         call.enqueue(object : Callback<GenreResponse> {
             override fun onResponse(call: Call<GenreResponse>?, response: Response<GenreResponse>?) {
                 val genres = response?.body()?.genres ?: listOf()
@@ -91,7 +93,7 @@ class MovieFragment : Fragment() {
 
         val realm = Realm.getDefaultInstance()
 
-        val call = RetrofitInitializer().movieService().getTopRatedMovies(currentPage, API_KEY, language)
+        val call = RetrofitInitializer().service(MovieService::class.java).getTopRatedMovies(currentPage, API_KEY, language)
         call.enqueue(object : Callback<MovieResponse> {
             override fun onResponse(call: Call<MovieResponse>?, response: Response<MovieResponse>?) {
                 Log.d(TAG, "Getting movie: " + currentPage)
