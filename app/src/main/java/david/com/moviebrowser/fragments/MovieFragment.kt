@@ -39,8 +39,8 @@ class MovieFragment : Fragment() {
         }
     }
 
-    override fun onCreateView(inflater: LayoutInflater?, container: ViewGroup?, savedInstanceState: Bundle?): View? {
-        return inflater!!.inflate(R.layout.fragment_movies, container, false)
+    override fun onCreateView(inflater: LayoutInflater, container: ViewGroup?, savedInstanceState: Bundle?): View? {
+        return inflater.inflate(R.layout.fragment_movies, container, false)
     }
 
     override fun onViewCreated(view: View?, savedInstanceState: Bundle?) {
@@ -51,7 +51,7 @@ class MovieFragment : Fragment() {
     }
 
     private fun initAdapter() {
-        val movieTopRatedAdapter = MovieTopRatedAdapter(context, movies)
+        val movieTopRatedAdapter = MovieTopRatedAdapter(context, movies, onClickListener())
         rvTopRatedMovies.adapter = movieTopRatedAdapter
     }
 
@@ -119,6 +119,17 @@ class MovieFragment : Fragment() {
 
         })
 
+    }
+
+    private fun onClickListener(): View.OnClickListener {
+        return View.OnClickListener { v ->
+            val position: Int = v.tag as Int
+            openMovieDetail(movies[position])
+        }
+    }
+
+    private fun openMovieDetail(movie: Movie) {
+        
     }
 
     private fun onScrollListener(): RecyclerView.OnScrollListener {

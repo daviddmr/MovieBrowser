@@ -7,6 +7,7 @@ import android.view.View
 import android.view.ViewGroup
 import android.widget.ImageView
 import android.widget.ProgressBar
+import android.widget.RelativeLayout
 import android.widget.TextView
 import com.squareup.picasso.Callback
 import com.squareup.picasso.Picasso
@@ -16,7 +17,8 @@ import david.com.moviebrowser.util.Constants.Companion.POSTERS_BASE_URL
 
 class MovieTopRatedAdapter(
         private val context: Context,
-        private var movies: MutableList<Movie>) : RecyclerView.Adapter<MovieTopRatedAdapter.ViewHolder>() {
+        private var movies: MutableList<Movie>,
+        private val onClickListener: View.OnClickListener) : RecyclerView.Adapter<MovieTopRatedAdapter.ViewHolder>() {
 
     override fun onCreateViewHolder(parent: ViewGroup?, viewType: Int): ViewHolder {
         return ViewHolder(LayoutInflater.from(context).inflate(R.layout.movie_item_adapter, parent, false))
@@ -41,6 +43,9 @@ class MovieTopRatedAdapter(
         holder?.tvMovieTitle?.text = movie.title
         holder?.tvMovieNote?.text = movie.voteAverage.toString()
 
+        holder?.mainLayout?.setOnClickListener(onClickListener)
+        holder?.mainLayout?.tag = position
+
     }
 
     override fun getItemCount(): Int {
@@ -53,6 +58,7 @@ class MovieTopRatedAdapter(
     }
 
     class ViewHolder(itemView: View) : RecyclerView.ViewHolder(itemView) {
+        var mainLayout: RelativeLayout = itemView.findViewById(R.id.mainLayout)
         var ivMoviePoster: ImageView = itemView.findViewById(R.id.ivMoviePoster)
         var pbImage: ProgressBar = itemView.findViewById(R.id.pbImage)
         var tvMovieTitle: TextView = itemView.findViewById(R.id.tvMovieTitle)
