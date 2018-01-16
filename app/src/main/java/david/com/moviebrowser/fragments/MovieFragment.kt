@@ -2,7 +2,7 @@ package david.com.moviebrowser.fragments
 
 import android.os.Bundle
 import android.support.v4.app.Fragment
-import android.support.v7.widget.DividerItemDecoration
+import android.support.v7.widget.GridLayoutManager
 import android.support.v7.widget.LinearLayoutManager
 import android.support.v7.widget.RecyclerView
 import android.util.Log
@@ -58,11 +58,8 @@ class MovieFragment : Fragment() {
     private fun initRecyclerView() {
         rvTopRatedMovies.setHasFixedSize(true)
         rvTopRatedMovies.addOnScrollListener(onScrollListener())
-        val linearLayoutManager = LinearLayoutManager(context)
+        val linearLayoutManager = GridLayoutManager(context, 4)
         rvTopRatedMovies.layoutManager = linearLayoutManager
-
-        val dividerItemDecoration = DividerItemDecoration(context, linearLayoutManager.orientation)
-        rvTopRatedMovies.addItemDecoration(dividerItemDecoration)
     }
 
     fun refreshMovieList(newMovies: List<Movie>) {
