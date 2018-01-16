@@ -5,6 +5,7 @@ import android.os.Parcelable
 import com.google.gson.annotations.SerializedName
 import io.realm.RealmList
 import io.realm.RealmObject
+import io.realm.RealmResults
 import io.realm.annotations.PrimaryKey
 import io.realm.annotations.RealmClass
 
@@ -17,7 +18,6 @@ class MovieResponse(
 
 @RealmClass
 open class Movie() : RealmObject(), Parcelable {
-
     @PrimaryKey
     var id: Long = 0
 
@@ -42,8 +42,8 @@ open class Movie() : RealmObject(), Parcelable {
     @SerializedName("original_title")
     var originalTitle: String = ""
 
-//    @SerializedName("genre_ids")
-//    var genreIds: RealmList<Int> = RealmList()
+    @SerializedName("genre_ids")
+    var genreIds: RealmList<Int> = RealmList()
 
     @SerializedName("backdrop_path")
     var backdropPath: String = ""
@@ -51,8 +51,17 @@ open class Movie() : RealmObject(), Parcelable {
     var adult: Boolean = false
 
     var overview: String = ""
+
     @SerializedName("release_date")
     var releaseDate: String = ""
+
+    companion object {
+        @JvmField
+        val CREATOR: Parcelable.Creator<Movie> = object : Parcelable.Creator<Movie> {
+            override fun createFromParcel(source: Parcel): Movie = Movie(source)
+            override fun newArray(size: Int): Array<Movie?> = arrayOfNulls(size)
+        }
+    }
 
     constructor(parcel: Parcel) : this() {
         id = parcel.readLong()
@@ -63,45 +72,31 @@ open class Movie() : RealmObject(), Parcelable {
         popularity = parcel.readDouble()
         posterPath = parcel.readString()
         originalLanguage = parcel.readString()
-//        this.genreIds = RealmList()
-//        parcel.readList(this.genreIds, Long::class.java.classLoader)
         originalTitle = parcel.readString()
+        parcel.readList(genreIds, List::class.java.classLoader)
         backdropPath = parcel.readString()
         adult = parcel.readByte() != 0.toByte()
         overview = parcel.readString()
         releaseDate = parcel.readString()
     }
 
-    override fun writeToParcel(parcel: Parcel, flags: Int) {
-        parcel.writeLong(id)
-        parcel.writeString(title)
-        parcel.writeDouble(voteCount)
-        parcel.writeByte(if (video) 1 else 0)
-        parcel.writeDouble(voteAverage)
-        parcel.writeDouble(popularity)
-        parcel.writeString(posterPath)
-        parcel.writeString(originalLanguage)
-        parcel.writeString(originalTitle)
-//        parcel.writeList(genreIds)
-        parcel.writeString(backdropPath)
-        parcel.writeByte(if (adult) 1 else 0)
-        parcel.writeString(overview)
-        parcel.writeString(releaseDate)
+    override fun describeContents() = 0
+
+    override fun writeToParcel(dest: Parcel, flags: Int) = with(dest) {
+        writeLong(id)
+        writeString(title)
+        writeDouble(voteCount)
+        writeByte(if (video) 1 else 0)
+        writeDouble(voteAverage)
+        writeDouble(popularity)
+        writeString(posterPath)
+        writeString(originalLanguage)
+        writeString(originalTitle)
+        writeList(genreIds)
+        writeString(backdropPath)
+        writeByte(if (adult) 1 else 0)
+        writeString(overview)
+        writeString(releaseDate)
+
     }
-
-    override fun describeContents(): Int {
-        return 0
-    }
-
-    companion object CREATOR : Parcelable.Creator<Movie> {
-        override fun createFromParcel(parcel: Parcel): Movie {
-            return Movie(parcel)
-        }
-
-        override fun newArray(size: Int): Array<Movie?> {
-            return arrayOfNulls(size)
-        }
-    }
-
-
 }
