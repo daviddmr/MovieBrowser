@@ -1,5 +1,6 @@
 package david.com.moviebrowser.fragments
 
+import android.content.Intent
 import android.os.Bundle
 import android.support.v4.app.Fragment
 import android.support.v7.widget.GridLayoutManager
@@ -10,6 +11,7 @@ import android.view.LayoutInflater
 import android.view.View
 import android.view.ViewGroup
 import david.com.moviebrowser.R
+import david.com.moviebrowser.activities.MovieDetailActivity
 import david.com.moviebrowser.adapters.MovieTopRatedAdapter
 import david.com.moviebrowser.api.RetrofitInitializer
 import david.com.moviebrowser.api.interfaces.GenreService
@@ -129,7 +131,9 @@ class MovieFragment : Fragment() {
     }
 
     private fun openMovieDetail(movie: Movie) {
-        
+        val intent = Intent(context, MovieDetailActivity::class.java)
+        intent.putExtra(MovieDetailActivity.ARG_MOVIE, movie)
+        startActivity(intent)
     }
 
     private fun onScrollListener(): RecyclerView.OnScrollListener {

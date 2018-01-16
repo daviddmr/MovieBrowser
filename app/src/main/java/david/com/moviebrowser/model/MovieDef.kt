@@ -42,8 +42,8 @@ open class Movie() : RealmObject(), Parcelable {
     @SerializedName("original_title")
     var originalTitle: String = ""
 
-    @SerializedName("genre_ids")
-    lateinit var genreIds: RealmList<Int>
+//    @SerializedName("genre_ids")
+//    var genreIds: RealmList<Int> = RealmList()
 
     @SerializedName("backdrop_path")
     var backdropPath: String = ""
@@ -63,8 +63,8 @@ open class Movie() : RealmObject(), Parcelable {
         popularity = parcel.readDouble()
         posterPath = parcel.readString()
         originalLanguage = parcel.readString()
-        this.genreIds = listOf<Int>() as RealmList<Int>
-        parcel.readList(this.genreIds, Long::class.java.classLoader)
+//        this.genreIds = RealmList()
+//        parcel.readList(this.genreIds, Long::class.java.classLoader)
         originalTitle = parcel.readString()
         backdropPath = parcel.readString()
         adult = parcel.readByte() != 0.toByte()
@@ -82,7 +82,7 @@ open class Movie() : RealmObject(), Parcelable {
         parcel.writeString(posterPath)
         parcel.writeString(originalLanguage)
         parcel.writeString(originalTitle)
-        parcel.writeList(genreIds)
+//        parcel.writeList(genreIds)
         parcel.writeString(backdropPath)
         parcel.writeByte(if (adult) 1 else 0)
         parcel.writeString(overview)
