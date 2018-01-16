@@ -46,7 +46,13 @@ class MovieFragment : Fragment() {
     override fun onViewCreated(view: View?, savedInstanceState: Bundle?) {
         super.onViewCreated(view, savedInstanceState)
         initRecyclerView()
+        initAdapter()
         loadMovies(currentPage)
+    }
+
+    private fun initAdapter() {
+        val movieTopRatedAdapter = MovieTopRatedAdapter(context, movies)
+        rvTopRatedMovies.adapter = movieTopRatedAdapter
     }
 
     private fun initRecyclerView() {
@@ -59,10 +65,9 @@ class MovieFragment : Fragment() {
         rvTopRatedMovies.addItemDecoration(dividerItemDecoration)
     }
 
-    fun refreshMovieList(movies: List<Movie>) {
-        val movieTopRatedAdapter = MovieTopRatedAdapter(context, movies)
-        rvTopRatedMovies.adapter = movieTopRatedAdapter
-        movieTopRatedAdapter.notifyDataSetChanged()
+    fun refreshMovieList(newMovies: List<Movie>) {
+        val adapter: MovieTopRatedAdapter = rvTopRatedMovies.adapter as MovieTopRatedAdapter
+        adapter.addMovieItems(newMovies)
     }
 
     private fun loadGenres() {
@@ -99,11 +104,11 @@ class MovieFragment : Fragment() {
                 Log.d(TAG, "Getting movie: " + currentPage)
                 this@MovieFragment.currentPage++
 
-                movies.addAll(response?.body()?.movies as MutableList<Movie>)
-                movies.isNotEmpty().let {
-                    refreshMovieList(movies)
+                val newMovies = response?.body()?.movies as MutableList<Movie>
+                newMovies.isNotEmpty().let {
+                    refreshMovieList(newMovies)
                     realm.executeTransaction {
-                        realm.copyToRealmOrUpdate(movies)
+                        realm.copyToRealmOrUpdate(newMovies)
                     }
                 }
 

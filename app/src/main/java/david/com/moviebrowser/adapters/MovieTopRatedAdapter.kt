@@ -11,7 +11,7 @@ import david.com.moviebrowser.model.Movie
 
 class MovieTopRatedAdapter(
         private val context: Context,
-        private val movies: List<Movie>) : RecyclerView.Adapter<MovieTopRatedAdapter.ViewHolder>() {
+        private var movies: MutableList<Movie>) : RecyclerView.Adapter<MovieTopRatedAdapter.ViewHolder>() {
 
     override fun onCreateViewHolder(parent: ViewGroup?, viewType: Int): ViewHolder {
         return ViewHolder(LayoutInflater.from(context).inflate(R.layout.movie_item_adapter, parent, false))
@@ -25,6 +25,11 @@ class MovieTopRatedAdapter(
 
     override fun getItemCount(): Int {
         return movies.size
+    }
+
+    fun addMovieItems(newMovies: List<Movie>) {
+        movies.addAll(newMovies)
+        notifyDataSetChanged()
     }
 
     class ViewHolder(itemView: View) : RecyclerView.ViewHolder(itemView) {
