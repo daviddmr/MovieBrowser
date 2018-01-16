@@ -5,7 +5,6 @@ import android.os.Parcelable
 import com.google.gson.annotations.SerializedName
 import io.realm.RealmList
 import io.realm.RealmObject
-import io.realm.RealmResults
 import io.realm.annotations.PrimaryKey
 import io.realm.annotations.RealmClass
 
@@ -67,7 +66,7 @@ open class Movie() : RealmObject(), Parcelable {
         id = parcel.readLong()
         title = parcel.readString()
         voteCount = parcel.readDouble()
-        video = parcel.readByte() != 0.toByte()
+        video = 1 == parcel.readInt()
         voteAverage = parcel.readDouble()
         popularity = parcel.readDouble()
         posterPath = parcel.readString()
@@ -75,10 +74,11 @@ open class Movie() : RealmObject(), Parcelable {
         originalTitle = parcel.readString()
         parcel.readList(genreIds, List::class.java.classLoader)
         backdropPath = parcel.readString()
-        adult = parcel.readByte() != 0.toByte()
+        adult = 1 == parcel.readInt()
         overview = parcel.readString()
         releaseDate = parcel.readString()
     }
+
 
     override fun describeContents() = 0
 
@@ -86,7 +86,7 @@ open class Movie() : RealmObject(), Parcelable {
         writeLong(id)
         writeString(title)
         writeDouble(voteCount)
-        writeByte(if (video) 1 else 0)
+        writeInt((if (video) 1 else 0))
         writeDouble(voteAverage)
         writeDouble(popularity)
         writeString(posterPath)
@@ -94,9 +94,8 @@ open class Movie() : RealmObject(), Parcelable {
         writeString(originalTitle)
         writeList(genreIds)
         writeString(backdropPath)
-        writeByte(if (adult) 1 else 0)
+        writeInt((if (adult) 1 else 0))
         writeString(overview)
         writeString(releaseDate)
-
     }
 }
