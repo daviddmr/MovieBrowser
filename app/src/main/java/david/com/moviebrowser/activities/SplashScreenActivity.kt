@@ -1,11 +1,14 @@
 package david.com.moviebrowser.activities
 
 import android.content.Intent
-import android.support.v7.app.AppCompatActivity
 import android.os.Bundle
 import android.os.Handler
-import david.com.moviebrowser.BaseActivity
+import android.support.v4.app.ActivityOptionsCompat
+import android.support.v4.util.Pair
+import android.support.v7.app.AppCompatActivity
+import android.view.View
 import david.com.moviebrowser.R
+import kotlinx.android.synthetic.main.activity_splash_screen.*
 
 class SplashScreenActivity : AppCompatActivity(), Runnable {
     override fun onCreate(savedInstanceState: Bundle?) {
@@ -21,8 +24,12 @@ class SplashScreenActivity : AppCompatActivity(), Runnable {
     }
 
     private fun startMainActivity() {
-        val intent = Intent(applicationContext, BaseActivity::class.java)
-        startActivity(intent)
+        val intent = Intent(applicationContext, LoginActivity::class.java)
+
+        val pair = Pair(ivIcon as View, "splashToLoginImage")
+        val options = ActivityOptionsCompat.makeSceneTransitionAnimation(this, pair)
+
+        startActivity(intent, options.toBundle())
         finish()
     }
 
