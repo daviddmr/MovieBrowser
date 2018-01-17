@@ -1,5 +1,5 @@
 <resources>
-    <string name="app_name">MovieBrowser</string>
+    <string name="app_name">Movie Browser</string>
 
     <string name="navigation_drawer_open">Open navigation drawer</string>
     <string name="navigation_drawer_close">Close navigation drawer</string>
@@ -11,5 +11,11 @@
     <string name="nav_top10_title">Top 10</string>
     <string name="nav_register_title">Cadastrar</string>
     <string name="nav_logout_title">Sair</string>
+
+    <!--Login screen-->
+    <string name="login">Login</string>
+    <string name="password">Password</string>
+    <string name="enter">Entrar</string>
+    <string name="register_yourself">Ainda não é cadastrado? <u>Cadastre-se</u></string>
 
 </resources>
