@@ -27,8 +27,6 @@
         android:layout_width="wrap_content"
         android:layout_height="wrap_content"
         android:layout_alignEnd="@+id/ivMoviePoster"
-        android:layout_alignLeft="@+id/ivMoviePoster"
-        android:layout_alignRight="@+id/ivMoviePoster"
         android:layout_alignStart="@+id/ivMoviePoster"
         android:layout_below="@+id/ivMoviePoster"
         android:maxLines="2" />
@@ -38,13 +36,9 @@
         android:layout_width="wrap_content"
         android:layout_height="wrap_content"
         android:layout_alignEnd="@+id/tvMovieTitle"
-        android:layout_alignLeft="@+id/tvMovieTitle"
-        android:layout_alignRight="@+id/tvMovieTitle"
         android:layout_alignStart="@+id/tvMovieTitle"
         android:layout_below="@+id/tvMovieTitle"
-        android:layout_marginLeft="-4dp"
         android:layout_marginStart="-4dp"
-        android:drawableLeft="@mipmap/ic_star"
         android:drawableStart="@mipmap/ic_star" />
 
 </RelativeLayout>
