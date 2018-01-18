@@ -16,6 +16,7 @@
         tools:ignore="ContentDescription" />
 
     <RelativeLayout
+        android:id="@+id/rvLogin"
         android:layout_width="match_parent"
         android:layout_height="wrap_content"
         android:layout_marginTop="20dp"
@@ -33,6 +34,7 @@
     </RelativeLayout>
 
     <RelativeLayout
+        android:id="@+id/rvPassword"
         android:layout_width="match_parent"
         android:layout_height="wrap_content"
         android:layout_marginTop="10dp"
@@ -62,6 +64,7 @@
     </RelativeLayout>
 
     <RelativeLayout
+        android:id="@+id/rvLoginBottom"
         android:layout_width="match_parent"
         android:layout_height="match_parent">
 
@@ -69,14 +72,14 @@
             android:id="@+id/btLogin"
             android:layout_width="match_parent"
             android:layout_height="wrap_content"
-            android:layout_above="@+id/tvForgotPassword"
+            android:layout_above="@+id/tvRegister"
             android:layout_centerHorizontal="true"
             android:layout_marginBottom="10dp"
             android:background="@drawable/layout_with_rounded_border"
             android:text="@string/enter" />
 
         <TextView
-            android:id="@+id/tvForgotPassword"
+            android:id="@+id/tvRegister"
             android:layout_width="wrap_content"
             android:layout_height="wrap_content"
             android:layout_alignParentBottom="true"
