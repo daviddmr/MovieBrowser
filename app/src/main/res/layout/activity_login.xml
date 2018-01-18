@@ -56,6 +56,7 @@
             android:layout_centerVertical="true"
             android:background="@android:color/transparent"
             android:src="@drawable/ic_visibility_off_black_24dp"
+            android:visibility="gone"
             tools:ignore="ContentDescription" />
 
     </RelativeLayout>
@@ -84,6 +85,5 @@
             android:text="@string/register_yourself" />
 
     </RelativeLayout>
-
 
 </LinearLayout>
